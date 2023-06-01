@@ -1,0 +1,15 @@
+{
+  "name": "delivery-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "install-server": "cd backend && npm i",
+    "start-server": "cd backend && npm run start",
+    "install-client": "cd frontend && npm i",
+    "start-client": "cd frontend && npm run dev"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
