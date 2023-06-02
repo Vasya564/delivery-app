@@ -4,6 +4,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import Shop from './components/Shop/Shop'
 import Cart from './components/Cart/Cart'
 import History from './components/History/History'
+import Coupon from './components/Coupon/Coupon'
 
 // pages
 import PageContainer from './pages/PageContainer'
@@ -28,6 +29,10 @@ function App() {
         {
           path: "history",
           element: <History />
+        },
+        {
+          path: "coupon",
+          element: <Coupon />
         }
       ]
     }

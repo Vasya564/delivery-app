@@ -1,0 +1,64 @@
+.menu{
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    grid-gap: 1rem;
+    flex: 1;
+    &__shops{
+        padding: 1rem;
+        text-align: center;
+    }
+    &__shops-list{
+        margin: 0.5rem auto;
+        list-style: none;
+        padding-left: 0;
+        width: 70%;
+    }
+    &__shop{
+        padding: 0.5rem 0;
+        border: 1px solid black;
+        border-radius: 3px;
+        &:hover{
+            cursor: pointer;
+        }
+        &.active{
+            background-color: lightgray;
+        }
+    }
+    &__shop + &__shop{
+        margin-top: 0.75rem;
+    }
+
+    &__shop-products{
+        display: flex;
+        flex-wrap: wrap;
+        padding: 1rem;
+        padding-right: 0;
+        height: 89vh;
+        overflow-y: scroll;
+        gap: 2rem;
+    }
+    &__shop-product{
+        height: 300px;
+        width: 340px;
+        padding: 1rem;
+        border-radius: 5px;
+        background-color: lightgray;
+        img{
+            object-fit: cover;
+            height: 200px;
+            width: 100%;
+            border-radius: 5px;
+        }
+        &-info{
+            display: flex;
+            flex-direction: column;
+        }
+        &-name{
+            padding: 0.5rem 0;
+        }
+        &-button{
+            align-self: flex-end;
+            width: 50%;
+        }
+    }
+}

@@ -3,7 +3,7 @@ import { GoogleMap, useLoadScript, MarkerF, InfoWindow } from '@react-google-map
 
 const containerStyle = {
   width: '100%',
-  height: '400px'
+  height: '350px'
 };
 
 const center = {

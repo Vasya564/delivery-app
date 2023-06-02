@@ -1,0 +1,45 @@
+.history{
+    &-request{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 50%;
+        margin: 0 auto;
+        button{
+            margin-top: 0.5rem;
+        }
+    }
+    &-result{
+        margin-top: 1rem;
+        max-height: 65vh;
+        overflow-y: scroll;
+    }
+    &-order + &-order{
+        margin-top: 1rem;
+    }
+    &-products{
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        padding: 1rem;
+        border: 1px solid gray;
+        padding-right: 1rem;
+        &--total{
+            align-self: center;
+            margin-left: auto;
+        }
+    }
+    &-product{
+        display: flex;
+        padding: 1rem;
+        width: 300px;
+        border-radius: 5px;
+        background-color: lightgray;
+        img{
+            object-fit: cover;
+            width: 100px;
+            height: 100px;
+            margin-right: 1rem;
+        }
+    }
+}

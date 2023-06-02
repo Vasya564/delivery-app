@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import useFetch from '../../hooks/useFetch';
+import './History.scss'
 
 const History = () => {
     const [email, setEmail] = useState('');
@@ -32,42 +33,50 @@ const History = () => {
     };
 
     return (
-        <div>
-        <h1>Order History</h1>
-
-        <div>
+        <section>
+        <section className='history-request'>
             <label htmlFor="email">Email:</label>
             <input
-            type="text"
-            id="email"
-            placeholder="Enter email"
-            value={email}
-            onChange={e => setEmail(e.target.value)}
+                type="text"
+                id="email"
+                placeholder="Enter email"
+                value={email}
+                onChange={e => setEmail(e.target.value)}
             />
             <label htmlFor="phone">Phone:</label>
             <input
-            type="text"
-            id="phone"
-            placeholder="Enter phone"
-            value={phone}
-            onChange={e => setPhone(e.target.value)}
+                type="text"
+                id="phone"
+                placeholder="Enter phone"
+                value={phone}
+                onChange={e => setPhone(e.target.value)}
             />
-            <button onClick={filterOrders}>Filter</button>
-        </div>
-
-        <ul>
+            <button onClick={filterOrders}>Search</button>
+        </section>
+        <section className='history-result'>
             {filteredOrders.length > 0 ? (
-            filteredOrders.map(order => (
-                <li key={order._id}>
-                <p>Email: {order.email}</p>
-                <p>Total price: {order.totalPrice}</p>
-                </li>
-            ))
+                filteredOrders.map((order) => (
+                <div className='history-order' key={order._id}>
+                    <div className='history-products'>
+                    {order.products.map((product) => (
+                        <div className='history-product' key={product._id}>
+                            <img src={product.photo}/>
+                            <div>
+                                <p>Product: {product.name}</p>
+                                <p>Price: {product.price}</p>
+                                <p>Quantity: {product.quantity}</p>
+                            </div>
+                        </div>
+                    ))}
+                    <p className='history-products--total'>Total price: {order.totalPrice}</p>
+                    </div>
+                </div>
+                ))
             ) : (
-            <li>No orders found.</li>
+                <li>No orders found.</li>
             )}
-        </ul>
-        </div>
+        </section>
+        </section>
   );
 };
 

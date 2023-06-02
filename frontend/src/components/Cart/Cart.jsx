@@ -7,10 +7,12 @@ import {
 import useFetch from "../../hooks/useFetch";
 import MapContainer from "../MapContainer/MapContainer";
 import PlacesAutocomplete from "../PlacesAutocomplete/PlacesAutocomplete";
+import './Cart.scss'
 
 const Cart = () => {
     const navigate = useNavigate();
     const createOrderUrl = import.meta.env.VITE_API_URL + 'orders/create';
+    const getCouponsUrl = import.meta.env.VITE_API_URL + 'coupons'
     const { data, fetchData } = useFetch();
 
     const [name, setName] = useState("");
@@ -23,6 +25,19 @@ const Cart = () => {
     const [isMapLoaded, setIsMapLoaded] = useState(false);
     const [shopCoords, setShopCoords] = useState(null);
     const [shopName, setShopName] = useState(null);
+    const [couponCode, setCouponCode] = useState('');
+
+    const getCoupons = () => {
+        const { data, fetchData } = useFetch();
+      
+        useEffect(() => {
+          fetchData(getCouponsUrl);
+        }, []);
+      
+        return data;
+    };
+
+    const coupons = getCoupons();
 
     useEffect(() => {
         const storedCartItems = getCartItemsFromStorage();
@@ -83,6 +98,20 @@ const Cart = () => {
         setSelectedAddress(selectedAddress);
     };
 
+    const applyCoupon = () => {
+        const coupon = coupons.find(coupon => coupon.code === couponCode);
+    
+        if (coupon) {
+            const discountPercentage = coupon.percentage;
+            const discountAmount = (totalPrice * discountPercentage) / 100;
+            const newTotal = totalPrice - discountAmount;
+            setTotalPrice(newTotal);
+        } else {
+            setTotalPrice(totalPrice);
+            alert('Invalid coupon code');
+        }
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault()
 
@@ -107,52 +136,71 @@ const Cart = () => {
     }
 
     return (
-        <section>
-            <MapContainer 
-                selectedAddress={selectedAddress} 
-                setIsMapLoaded={setIsMapLoaded}
-                shopCoords={shopCoords}
-                shopName={shopName}/>
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <label>Name:</label>
-                    <input type="text" value={name} onChange={(e) => setName(e.target.value)} />
-                </div>
-                <div>
-                    <label>Phone:</label>
-                    <input type="text" value={phone} onChange={(e) => setPhone(e.target.value)} />
-                </div>
-                <div>
-                    <label>Email:</label>
-                    <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
-                </div>
-                <div>
-                    <label>Address:</label>
-                    {/* <input type="text" value={address} onChange={(e) => setAddress(e.target.value)} /> */}
-                    {isMapLoaded && <PlacesAutocomplete
-                        value={address}
-                        onSelect={handleAddressSelect}
-                        onChange={(value) => setAddress(value)}
-                    />}
-                </div>
+        <section className="cart">
+            <div className="cart__user-info">
+                <MapContainer 
+                    selectedAddress={selectedAddress} 
+                    setIsMapLoaded={setIsMapLoaded}
+                    shopCoords={shopCoords}
+                    shopName={shopName}/>
+                <form id="cart__user-info-form" className="cart__user-info-form" onSubmit={handleSubmit}>
+                    <div>
+                        <label>Address:</label>
+                        {isMapLoaded && <PlacesAutocomplete
+                            value={address}
+                            onSelect={handleAddressSelect}
+                            onChange={(value) => setAddress(value)}
+                        />}
+                    </div>
+                    <div>
+                        <label>Name:</label>
+                        <input type="text" value={name} onChange={(e) => setName(e.target.value)} />
+                    </div>
+                    <div>
+                        <label>Phone:</label>
+                        <input type="text" value={phone} onChange={(e) => setPhone(e.target.value)} />
+                    </div>
+                    <div>
+                        <label>Email:</label>
+                        <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+                    </div>
+                </form>
+            </div>
+            <div className="cart__order">
+                <div className="cart__order-items">
                 {cartItems.map((item) => (
-                    <div key={item._id}>
+                    <div className="cart__order-item" key={item._id}>
+                        <img src={item.photo}/>
+                        <div className="cart__order-item-info">
                         <p>{item.name}</p>
-                        <p>Quantity: {item.quantity}</p>
+                        <p>Price: ${item.quantity * item.price}</p>
                         <input
                             type="number"
                             min="1"
                             value={item.quantity}
                             onChange={(e) => handleQuantityChange(item._id, parseInt(e.target.value))}
                         />
-                        <p>Price: {item.quantity * item.price}</p>
                         <button onClick={() => handleRemoveCartItem(item._id)}>Remove</button>
+                        </div>
                     </div>
                 ))}
-                <button>Submit</button>
-            </form>
-            
-            <p>Total Price: {totalPrice}</p>
+                </div>
+                <div className="cart__order-checkout">
+                    <div>
+                    <input
+                        type="text"
+                        placeholder="Enter coupon code"
+                        value={couponCode}
+                        onChange={e => setCouponCode(e.target.value)}
+                    />
+                    <button onClick={applyCoupon}>Apply Coupon</button>
+                    </div>
+                    <div>
+                    <p>Total Price: ${totalPrice}</p>
+                    <button className="cart__order-submit" form="cart__user-info-form">Submit</button>
+                    </div>
+                </div>
+            </div>
         </section>
     );
 }
