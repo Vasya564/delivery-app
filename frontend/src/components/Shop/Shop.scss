@@ -29,13 +29,12 @@
     }
 
     &__shop-products{
-        display: flex;
-        flex-wrap: wrap;
-        padding: 1rem;
-        padding-right: 0;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, 340px);
+        grid-template-rows: 300px;
+        gap: 2rem;
         height: 89vh;
         overflow-y: scroll;
-        gap: 2rem;
     }
     &__shop-product{
         height: 300px;

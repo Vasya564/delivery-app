@@ -24,4 +24,4 @@ Delivery App is a web application that allows you to order food from dining esta
 3. npm run install-client && npm run start-client
 
 ## Usage
-go to <http://localhost:5173> or visit <site>
+go to <http://localhost:5173> or visit <https://delivery-client.onrender.com/>
