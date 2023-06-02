@@ -45,6 +45,7 @@ const History = () => {
                 value={email}
                 onChange={e => setEmail(e.target.value)}
             />
+            <p>OR</p>
             <label htmlFor="phone">Phone:</label>
             <input
                 type="text"

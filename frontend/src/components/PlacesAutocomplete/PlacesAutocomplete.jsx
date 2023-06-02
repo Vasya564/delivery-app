@@ -32,6 +32,7 @@ const PlacesAutocomplete = ({ onSelect }) => {
         onChange={(e) => setValue(e.target.value)}
         disabled={!ready}
         placeholder="Search for an address"
+        required
       />
       {status === 'OK' && (
         <ul className='suggestions'>

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { 
     getCartItemsFromStorage, 
@@ -7,6 +7,8 @@ import {
 import useFetch from "../../hooks/useFetch";
 import MapContainer from "../MapContainer/MapContainer";
 import PlacesAutocomplete from "../PlacesAutocomplete/PlacesAutocomplete";
+
+import Input, {isValidPhoneNumber} from 'react-phone-number-input/input'
 import './Cart.scss'
 
 const Cart = () => {
@@ -26,6 +28,8 @@ const Cart = () => {
     const [shopCoords, setShopCoords] = useState(null);
     const [shopName, setShopName] = useState(null);
     const [couponCode, setCouponCode] = useState('');
+
+    const phoneInputRef = useRef();
 
     const getCoupons = () => {
         const { data, fetchData } = useFetch();
@@ -117,6 +121,17 @@ const Cart = () => {
 
         const order = {name, address, phone, email, products: cartItems, totalPrice}
 
+        if(!phone || phone === undefined){
+            phoneInputRef.current.focus();
+            alert('Phone number required')
+            return;
+        }
+
+        if (cartItems.length === 0) {
+            alert('Cart is empty');
+            return;
+        }
+
         try {
             const { response, data } = await fetchData(createOrderUrl, 'POST', order);
         
@@ -154,15 +169,34 @@ const Cart = () => {
                     </div>
                     <div>
                         <label>Name:</label>
-                        <input type="text" value={name} onChange={(e) => setName(e.target.value)} />
+                        <input 
+                            type="text" 
+                            value={name} 
+                            onChange={(e) => setName(e.target.value)}
+                            pattern="[A-Za-z\s]+" 
+                            title="Please enter a valid name (only alphabetic characters and spaces are allowed)"
+                            required />
                     </div>
                     <div>
                         <label>Phone:</label>
-                        <input type="text" value={phone} onChange={(e) => setPhone(e.target.value)} />
+                        <Input 
+                            country="UA"
+                            international
+                            withCountryCallingCode
+                            value={phone} 
+                            onChange={setPhone}
+                            ref={phoneInputRef}
+                            error={phone ? (isValidPhoneNumber(phone) ? undefined : 'Invalid phone number') : 'Phone number required'}
+                            required />
                     </div>
                     <div>
                         <label>Email:</label>
-                        <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+                        <input 
+                            type="email" 
+                            value={email} 
+                            onChange={(e) => setEmail(e.target.value)}
+                            pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}" 
+                            required />
                     </div>
                 </form>
             </div>
