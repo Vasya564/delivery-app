@@ -4,7 +4,7 @@ const Schema = mongoose.Schema
 
 const orderSchema = new Schema({
     address: {
-        type: String,
+        type: Array,
         required: true
     },
     name: {
@@ -24,10 +24,7 @@ const orderSchema = new Schema({
         required: true
     },
     products: [{
-        photo: {
-            data: Buffer,
-            contentType: String
-        },
+        photo: String,
         name: String,
         price: Number,
         quantity: Number
