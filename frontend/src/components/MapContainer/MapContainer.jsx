@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { GoogleMap, useLoadScript, MarkerF, InfoWindow } from '@react-google-maps/api';
+import { GoogleMap, useLoadScript, MarkerF, InfoWindowF } from '@react-google-maps/api';
 
 const containerStyle = {
   width: '100%',
@@ -43,13 +43,13 @@ const MapContainer = ({ selectedAddress, setIsMapLoaded, shopCoords, shopName })
       zoom={14}
       onLoad={onMapLoad}
     >
-      {selectedAddress && <MarkerF position={selectedAddress} />}
-      {shopCoords && 
+      {isLoaded && selectedAddress && <MarkerF position={selectedAddress} />}
+      {isLoaded && shopCoords && 
         <MarkerF position={shopCoords}>
             {shopName &&
-            <InfoWindow position={shopCoords}>
-                <div>{shopName}</div>
-            </InfoWindow>}
+            <InfoWindowF position={shopCoords}>
+                <p>{shopName}</p>
+            </InfoWindowF>}
         </MarkerF>}
     </GoogleMap>
     </>
