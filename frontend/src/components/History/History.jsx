@@ -11,7 +11,6 @@ const History = () => {
     const { data: orders, fetchData } = useFetch()
     useEffect(() => {
         fetchData(getOrdersUrl)
-        setFilteredOrders(fetchData(getOrdersUrl))
     }, []);
 
     const filterOrders = () => {
@@ -19,13 +18,16 @@ const History = () => {
             return;
         }
         const filtered = orders.filter(order => {
-        return (
-            order.email.toLowerCase().includes(email.toLowerCase()) ||
-            order.phone.includes(phone)
-        );
+            console.log(email)
+            if (order.email === email || order.phone === phone) {
+                return order;
+            }
+            else{
+                return
+            }
         });
         if(email || phone){
-        setFilteredOrders(filtered);
+            setFilteredOrders(filtered);
         }
         else{
             setFilteredOrders([]);
