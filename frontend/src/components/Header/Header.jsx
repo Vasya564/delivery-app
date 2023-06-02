@@ -5,6 +5,7 @@ const Header = () => {
         <header>
             <NavLink to=''>Shop</NavLink>
             <NavLink to='cart'>Shoping Cart</NavLink>
+            <NavLink to='history'>History</NavLink>
         </header>
     );
 }

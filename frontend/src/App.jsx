@@ -2,6 +2,8 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 
 // components
 import Shop from './components/Shop/Shop'
+import Cart from './components/Cart/Cart'
+import History from './components/History/History'
 
 // pages
 import PageContainer from './pages/PageContainer'
@@ -18,6 +20,14 @@ function App() {
         {
           path: "",
           element: <Shop />
+        },
+        {
+          path: "cart",
+          element: <Cart />
+        },
+        {
+          path: "history",
+          element: <History />
         }
       ]
     }
