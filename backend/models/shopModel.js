@@ -8,8 +8,8 @@ const shopSchema = new Schema({
         required: true
     },
     coords: {
-        lat: Number,
-        lng: Number
+        lat: String,
+        lng: String
     },
     products: [{
         photo: {

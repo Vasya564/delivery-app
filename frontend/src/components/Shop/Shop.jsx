@@ -1,19 +1,43 @@
 import { useState, useEffect } from "react";
 import useFetch from "../../hooks/useFetch";
+import { getCartItemsFromStorage, setCartItemsToStorage } from "../../hooks/useCartStorage";
 
 const Shop = () => {
     const getShopsUrl = import.meta.env.VITE_API_URL + 'shops'
-    const { data: shops, isLoading, error } = useFetch(getShopsUrl)
+    const { data: shops, fetchData } = useFetch()
     const [selectedShop, setSelectedShop] = useState(null);
+    const [cartItems, setCartItems] = useState([]);
+
+    useEffect(() => {
+        fetchData(getShopsUrl)
+    }, []);
 
     useEffect(() => {
         if (shops) {
-          setSelectedShop(shops[0]._id);
-        }
-      }, [shops]);
+            const selectedShopId = JSON.parse(localStorage.getItem("selectedShop"));
+            const selectedShopExists = shops.some(shop => shop._id === selectedShopId?.id);
 
-    const handleShopClick = (shopId) => {
-        setSelectedShop(shopId);
+            if (selectedShopExists) {
+                setSelectedShop(selectedShopId?.id);
+            } else {
+                const defaultShop = shops[0];
+                setSelectedShop(defaultShop._id);
+                localStorage.setItem("selectedShop", JSON.stringify({ id: defaultShop._id, name: defaultShop.name, coords: defaultShop.coords }));
+            }
+            setCartItems(getCartItemsFromStorage());
+        }
+    }, [shops]);
+
+    const handleShopClick = (shopId, shopName, shopCoords) => {
+        if(!cartItems.length){
+            setSelectedShop(shopId);
+            localStorage.setItem("selectedShop", JSON.stringify({ id: shopId, name: shopName, coords: shopCoords }));
+        }
+    };
+
+    const handleAddToCart = (product) => {
+        setCartItemsToStorage(product);
+        setCartItems([...cartItems, product]);
     };
 
     return (
@@ -23,7 +47,7 @@ const Shop = () => {
                 {shops && shops.map(shop => (
                 <li
                     key={shop._id}
-                    onClick={() => handleShopClick(shop._id)}
+                    onClick={() => handleShopClick(shop._id, shop.name, shop.coords)}
                     className={selectedShop === shop._id ? 'active' : ''}
                 >
                     {shop.name}
@@ -35,7 +59,15 @@ const Shop = () => {
                 <h3>Products</h3>
                 <ul>
                     {shops && shops.find(shop => shop._id === selectedShop).products.map((product, index) =>(
-                        <li key={index}>{product.name} - ${product.price}</li>
+                        <div key={index}>
+                            <li>{product.name} - ${product.price}</li>
+                            <button
+                                onClick={() => handleAddToCart(product)}
+                                disabled={cartItems.some((item) => item._id === product._id)}
+                            >
+                                {cartItems.some((item) => item._id === product._id) ? 'In cart' : 'Add to cart'}
+                            </button>
+                        </div>
                     ))}
                 </ul>
                 </div>
