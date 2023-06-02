@@ -4,6 +4,8 @@ import usePlacesAutocomplete, {
   getLatLng
 } from 'use-places-autocomplete';
 
+import './PlacesAutocomplete.scss'
+
 const PlacesAutocomplete = ({ onSelect }) => {
   const [address, setAddress] = useState('');
   const {
@@ -24,7 +26,7 @@ const PlacesAutocomplete = ({ onSelect }) => {
   };
 
   return (
-    <div>
+    <div className='autocomplete'>
       <input
         value={value}
         onChange={(e) => setValue(e.target.value)}
@@ -32,7 +34,7 @@ const PlacesAutocomplete = ({ onSelect }) => {
         placeholder="Search for an address"
       />
       {status === 'OK' && (
-        <ul>
+        <ul className='suggestions'>
           {data.map(({ place_id, description }) => (
             <li key={place_id} onClick={() => handleSelect(description)}>
               {description}

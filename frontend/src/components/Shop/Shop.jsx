@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import useFetch from "../../hooks/useFetch";
 import { getCartItemsFromStorage, setCartItemsToStorage } from "../../hooks/useCartStorage";
+import './Shop.scss'
 
 const Shop = () => {
     const getShopsUrl = import.meta.env.VITE_API_URL + 'shops'
@@ -41,38 +42,41 @@ const Shop = () => {
     };
 
     return (
-        <div className="sidebar-menu">
-            <h2>Shops</h2>
-            <ul>
-                {shops && shops.map(shop => (
-                <li
-                    key={shop._id}
-                    onClick={() => handleShopClick(shop._id, shop.name, shop.coords)}
-                    className={selectedShop === shop._id ? 'active' : ''}
-                >
-                    {shop.name}
-                </li>
-                ))}
-            </ul>
-            {selectedShop && (
-                <div className="selected-shop-products">
-                <h3>Products</h3>
-                <ul>
-                    {shops && shops.find(shop => shop._id === selectedShop).products.map((product, index) =>(
-                        <div key={index}>
-                            <li>{product.name} - ${product.price}</li>
-                            <button
-                                onClick={() => handleAddToCart(product)}
-                                disabled={cartItems.some((item) => item._id === product._id)}
-                            >
-                                {cartItems.some((item) => item._id === product._id) ? 'In cart' : 'Add to cart'}
-                            </button>
-                        </div>
+        <section className="menu">
+            <div className="menu__shops">
+                <h3 className="menu__title">Shops:</h3>
+                <ul className="menu__shops-list">
+                    {shops && shops.map(shop => (
+                    <li
+                        key={shop._id}
+                        onClick={() => handleShopClick(shop._id, shop.name, shop.coords)}
+                        className={`menu__shop ${selectedShop === shop._id ? 'active' : ''}`}
+                    >
+                        {shop.name}
+                    </li>
                     ))}
                 </ul>
+            </div>
+            {selectedShop && (
+                <div className="menu__shop-products">
+                    {shops && shops.find(shop => shop._id === selectedShop).products.map((product, index) =>(
+                        <div className="menu__shop-product" key={index}>
+                            <img src={product.photo}/>
+                            <div className="menu__shop-product-info">
+                                <p className="menu__shop-product-name">{product.name} - ${product.price}</p>
+                                <button
+                                    className="menu__shop-product-button"
+                                    onClick={() => handleAddToCart(product)}
+                                    disabled={cartItems.some((item) => item._id === product._id)}
+                                >
+                                    {cartItems.some((item) => item._id === product._id) ? 'In cart' : 'Add to cart'}
+                                </button>
+                            </div>
+                        </div>
+                    ))}
                 </div>
             )}
-        </div>
+        </section>
     );
 }
  

@@ -1,4 +1,5 @@
 import { NavLink } from "react-router-dom";
+import './Header.scss'
 
 const Header = () => {
     return (
@@ -6,6 +7,7 @@ const Header = () => {
             <NavLink to=''>Shop</NavLink>
             <NavLink to='cart'>Shoping Cart</NavLink>
             <NavLink to='history'>History</NavLink>
+            <NavLink to='coupon'>Coupons</NavLink>
         </header>
     );
 }
