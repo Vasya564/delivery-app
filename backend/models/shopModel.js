@@ -12,10 +12,7 @@ const shopSchema = new Schema({
         lng: String
     },
     products: [{
-        photo: {
-            data: Buffer,
-            contentType: String
-        },
+        photo: String,
         name: String,
         price: Number,
         quantity: Number

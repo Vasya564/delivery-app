@@ -1,5 +1,4 @@
 const express = require('express')
-const multer = require('multer');
 
 // controller functions
 const { 
@@ -10,9 +9,6 @@ const {
 
 const router = express.Router()
 
-const storage = multer.memoryStorage();
-const upload = multer({ storage });
-
 // GET all shops
 router.get('/', getShops)
 
@@ -20,7 +16,7 @@ router.get('/', getShops)
 router.get('/:id', getShop)
 
 // CREATE shop
-router.post('/create', upload.single('photo'), createShop)
+router.post('/create', createShop)
 
 // DELETE shop
 router.delete('/:id', deleteShop)
