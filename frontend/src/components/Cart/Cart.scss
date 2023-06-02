@@ -12,7 +12,8 @@
         &-form{
             display: flex;
             flex-direction: column;
-            justify-content: space-around;
+            justify-content: center;
+            gap: 1rem;
             flex: 1;
             margin: auto 0;
             width: 100%;          
@@ -62,8 +63,8 @@
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
-                input{
-                    width: 80%;
+                input + button{
+                    margin-left: 1rem;
                 }
                 p, .cart__order-submit{
                     font-size: 1.5rem;
